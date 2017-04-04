@@ -13,7 +13,7 @@
 
     <title><?php echo $pageName?></title>
 
-    <?php include 'pages/resources.php';?>
+    <?php include 'resources/resources.php';?>
     <style type="text/css">
       .navbar-login
       {
@@ -41,7 +41,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <?php include 'pages/navbar.php';?>
+        <?php include 'resources/navbar.php';?>
 
         <div id="page-wrapper">
         
