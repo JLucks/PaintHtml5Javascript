@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php $pageName = "[] Snike"?>
+<?php $pageName = "[] NewPaint"?>
 
 <head>
 

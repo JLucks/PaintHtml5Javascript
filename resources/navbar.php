@@ -6,7 +6,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
             </button>
-            <a target="_blank" class="navbar-brand">[] Snike</a>
+            <a target="_blank" class="navbar-brand">[] NewPaint</a>
         </div>
                    <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
