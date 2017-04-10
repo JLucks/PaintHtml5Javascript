@@ -13,7 +13,7 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="?"><i class="fa fa-refresh fa-fw"></i> Restart</a>
+                            <a href="?"><i class="fa fa-plus fa-fw"></i> Novo</a>
                         </li>                            
                     </ul>
                 </div>

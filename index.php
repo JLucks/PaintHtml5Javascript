@@ -14,26 +14,6 @@
     <title><?php echo $pageName?></title>
 
     <?php include 'resources/resources.php';?>
-    <style type="text/css">
-      .navbar-login
-      {
-          width: 305px;
-          padding: 10px;
-          padding-bottom: 0px;
-      }
-
-      .navbar-login-session
-      {
-          padding: 10px;
-          padding-bottom: 0px;
-          padding-top: 0px;
-      }
-
-      .icon-size
-      {
-          font-size: 87px;
-      }
-    </style>
 </head>
 
 <body>
