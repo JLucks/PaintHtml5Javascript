@@ -86,7 +86,7 @@ function pickArea(id, x, y){
 					if ((p1.x > x) && (p2.x > x))
 					 	ni++; 			/* inteiramente a direita */
 					else{                   /* verifica ponto de intersecao */
-						float dx = p1.x - p2.x;
+						var dx = p1.x - p2.x;
 						xc = p1.x;
 						if ( dx != 0.0 )
 							xc += ( y - p1.y ) * dx / ( p1.y - p2.y );

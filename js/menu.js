@@ -155,13 +155,41 @@ window.onload=function(){
         ctx.stroke();
     //Nono botão
         ctx.rect(100,0,100,100);
-        ctx.stroke();    
+        ctx.stroke(); 
+        //Cruz
+        ctx.moveTo(125,50);
+        ctx.lineTo(175,50);
+        ctx.moveTo(150,25);
+        ctx.lineTo(150,75);
+        ctx.stroke();   
     //Decimo botão
         ctx.rect(100,100,100,100);
-        ctx.stroke();    
+        ctx.stroke();
+        //Espelho
+        ctx.moveTo(155,120);
+        ctx.lineTo(195,110);
+        ctx.lineTo(195,185);
+        ctx.lineTo(155,175);
+        ctx.lineTo(155,120);
+        ctx.stroke();   
+        ctx.beginPath();
+        ctx.arc(130,150,5,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill(); 
+        ctx.beginPath();
+        ctx.arc(175,150,4,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill(); 
     //Decimo Primeiro botão
         ctx.rect(100,200,100,100);
         ctx.stroke();    
+        //Escala
+        ctx.font = "30px Arial";
+        ctx.fillText("2x",110,250);
+        ctx.rect(110,260,30,30);
+        ctx.stroke(); 
+        ctx.rect(145,220,50,50);
+        ctx.stroke(); 
     //Decimo Segundo botão
         ctx.rect(100,300,100,100);
         ctx.stroke();
