@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php $pageName = "[] NewPaint"?>
+<?php $pageName = "Canvas Paint"?>
 
 <head>
 
@@ -35,7 +35,7 @@
                     }
                 }
                 else{
-                    include 'pages/game.html';
+                    include 'pages/paint.html';
                 }   
 
             ?>

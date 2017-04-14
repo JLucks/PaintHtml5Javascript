@@ -6,14 +6,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
             </button>
-            <a target="_blank" class="navbar-brand">[] NewPaint</a>
+            <a target="_blank" class="navbar-brand">Canvas Paint</a>
         </div>
                    <!-- /.navbar-header -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="?"><i class="fa fa-plus fa-fw"></i> Novo</a>
+                            <a href=""><i class="fa fa-plus fa-fw"></i> Novo</a>
                         </li>                            
                     </ul>
                 </div>
