@@ -1,0 +1,11 @@
+var PONTO = [];						//Array com os pontos
+var RETA = [];						//Array com as retas
+var AREA = [];						//Array com as areas
+var CIR = [];						//Array com os circulos
+var TOL = 5;						//Tolerância
+var MODEACTIVE = 0; 				//Modo de escrita, seleção ou exclusão
+var PRIMITIVE = 0;					//Modo ponto, reta, poligono ou circunferência
+var MODETRANSFORM = 0;				//Translação, Rotação, Espelhamento ou Escala
+var DRAWINGRETA = 0;				//Se esta desenhando uma reta
+var DRAWINGAREA = 0;				//Se esta desenhando uma area
+var DRAWINGCIR = 0;					//Se esta desenhando um circulo
