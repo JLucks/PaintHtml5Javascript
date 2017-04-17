@@ -37,7 +37,7 @@ var Reta = (function(){
 		RETA[idReta].n += 1;				//A cada dois pontos uma reta
 	};
 
-	//Remove a reta do array de retas	---> Falta remover os pontos
+	//Remove a reta do array de retas
 	my.delete = function(id){
 		RETA.splice(id,1);
 	};
@@ -64,7 +64,7 @@ var Area = (function(){
 		AREA[idArea].n += 1;				//Dois pontos formam uma aresta
 	};
 
-	//Remove a area do array de areas 	---> Falta remover os pontos
+	//Remove a area do array de areas 	
 	my.delete = function(id){
 		AREA.splice(id,1);
 	};
@@ -87,7 +87,7 @@ var Circulo = (function(){
 		CIR[idCir].raio = raio;
 	};
 
-	//Remove o circulo do array de circulos	---> Falta remover os pontos
+	//Remove o circulo do array de circulos	
 	my.delete = function(id){
 		CIR.splice(id,1);
 	};	
@@ -233,5 +233,32 @@ var FUNCTIONS = (function(){
 		return false;
 	};
 
+	//Translação
+	my.translacao = function(idPonto, tx, ty){
+		PONTO[idPonto].coord.x = PONTO[idPonto].coord.x + tx;
+		PONTO[idPonto].coord.y = PONTO[idPonto].coord.y + ty;
+	};
+
+	//Rotação
+	my.rotacao = function(idPonto, ang){
+		PONTO[idPonto].coord.x = (PONTO[idPonto].coord.x * Math.cos(ang)) - (PONTO[idPonto].coord.y * Math.sin(ang));
+		PONTO[idPonto].coord.y = (PONTO[idPonto].coord.x * Math.sin(ang)) + (PONTO[idPonto].coord.y * Math.cos(ang));
+	};
+
+	//Escala
+	my.escala = function(idPonto, sx, sy){
+		PONTO[idPonto].coord.x = PONTO[idPonto].coord.x * sx;
+		PONTO[idPonto].coord.y = PONTO[idPonto].coord.y * sy;
+	};
+
+	//Espelhamento
+	my.espelhamentoX = function(idPonto){
+		PONTO[idPonto].coord.y = PONTO[idPonto].coord.y * (-1);
+	};
+
+	my.espelhamentoY = function(idPonto){
+		PONTO[idPonto].coord.x = PONTO[idPonto].coord.x * (-1);
+	};
+	
 	return my;						//Retorna o que é público
 }());

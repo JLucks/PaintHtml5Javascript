@@ -9,3 +9,5 @@ var MODETRANSFORM = 0;				//Translação, Rotação, Espelhamento ou Escala
 var DRAWINGRETA = 0;				//Se esta desenhando uma reta
 var DRAWINGAREA = 0;				//Se esta desenhando uma area
 var DRAWINGCIR = 0;					//Se esta desenhando um circulo
+var DRAWINGTRANS = 0;				//Se esta transformando
+var SELECTID = -1;					//Primitiva selecionada
