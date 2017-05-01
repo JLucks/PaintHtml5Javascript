@@ -17,6 +17,7 @@ var DRAW = (function(){
 
 	//Desenha um segmento de reta
 	my.drawLine = function(ctx, xi, yi, xf, yf){
+        ctx.fillStyle = "black";
 		ctx.moveTo(xi,yi);
 	    ctx.lineTo(xf,yf);
 	    ctx.stroke();
@@ -225,5 +226,31 @@ var DRAW = (function(){
         ctx.rect(100,700,100,100);
         ctx.stroke();
 	 };
+
+     my.drawUpdate = function(canvas){
+        ctx = canvas.getContext('2d');
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "white";
+        ctx.fillRect(0,0,canvas.width,canvas.height);        
+        ctx.fillStyle = "black";
+        for (var i = 0; i < PONTO.length; i++) {            //Percorre os pontos
+            DRAW.drawPoint(ctx,PONTO[i].coord.x,PONTO[i].coord.y);          //Redesenha
+        }
+        for (var i = 0; i < RETA.length; i++) {
+            for (var j = 0; j < RETA[i].n; j++) {       //Apaga as linhas e os pontos
+                DRAW.drawLine(ctx, RETA[i].coord[j].x,RETA[i].coord[j].y, RETA[i].coord[j+1].x,RETA[i].coord[j+1].y);
+            }
+        }   
+        for (var i = 0; i < AREA.length; i++) {
+            var fst = AREA[i].n;
+            for (var j = 0; j <= AREA[i].n; j++) {       //Apaga as linhas e os pontos
+                DRAW.drawLine(ctx, AREA[i].coord[j].x,AREA[i].coord[j].y, AREA[i].coord[fst].x,AREA[i].coord[fst].y);
+                fst = j;
+            }
+        }
+        for (var i = 0; i < CIR.length; i++) {
+            DRAW.drawCir(ctx, CIR[i].coord.x, CIR[i].coord.y, CIR[i].raio);
+        }
+     };
 	return my;
 }());

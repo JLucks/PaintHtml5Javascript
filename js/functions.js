@@ -149,7 +149,7 @@ var FUNCTIONS = (function(){
 		ymax = y + TOL;
 
 		/* testa cada segmento */
-		for (i = 1; i < RETA[id].n; i++)
+		for (i = 1; i <= RETA[id].n; i++)
 		{
 			x0 = RETA[id].coord[i-1].x;
 			x1 = RETA[id].coord[i].x;
@@ -185,11 +185,11 @@ var FUNCTIONS = (function(){
 	my.pickArea = function(id, x, y){
 		var i;
 		var ni = 0; 	  		/* numero de intersecoes */
-		var fst = AREA[id].n - 1;	/* comeca pelo ultimo no' */
+		var fst = AREA[id].n;	/* comeca pelo ultimo no' */
 		var xc;
 		var p1, p2; 			/* pontos da aresta */
 
-		for (i = 0; i < AREA[id].n; i++){
+		for (i = 0; i <= AREA[id].n; i++){
 			p1 = AREA[id].coord[i];
 			p2 = AREA[id].coord[fst];
 			if (!(p1.y == p2.y) &&	     /* descarta horizontais */
@@ -233,16 +233,54 @@ var FUNCTIONS = (function(){
 		return false;
 	};
 
+	my.somaMatriz = function(A, B, m, n){
+		var C = [];
+		//init the grid matrix
+		for ( var i = 0; i < m; i++ ) {
+		    C[i] = []; 
+		}
+		for (var i = 0; i < m; i++) {
+			for (var j = 0; j < n; j++) {
+				C[i][j] =  A[i][j] + B[i][j];
+			}
+		}
+		return C;
+	};
+
+	my.multiMatriz = function(A,B,m,n,p){
+		var C = [];
+		//init the grid matrix
+		for ( var i = 0; i < m; i++ ) {
+		    C[i] = []; 
+		}
+		for (var i = 0; i < m; i++) {
+			for (var j = 0; j < p; j++) {
+				C[i][j] =  0;
+			}
+		}
+		for (var i = 0; i < m; i++) {
+			for (var j = 0; j < n; j++) {
+				for (var k = 0; k < p; k++) {
+					C[i][k] += A[i][j] * B[j][k];
+				}
+			}
+		}
+		return C;
+	};
+
 	//Translação
-	my.translacao = function(idPonto, tx, ty){
-		PONTO[idPonto].coord.x = PONTO[idPonto].coord.x + tx;
-		PONTO[idPonto].coord.y = PONTO[idPonto].coord.y + ty;
+	my.translacao = function(A, tx, ty){
+		var MT = [[1,0,tx],[0,1,ty],[0,0,1]];
+		return my.multiMatriz(MT,A,3,3,1);
 	};
 
 	//Rotação
-	my.rotacao = function(idPonto, ang){
-		PONTO[idPonto].coord.x = (PONTO[idPonto].coord.x * Math.cos(ang)) - (PONTO[idPonto].coord.y * Math.sin(ang));
-		PONTO[idPonto].coord.y = (PONTO[idPonto].coord.x * Math.sin(ang)) + (PONTO[idPonto].coord.y * Math.cos(ang));
+	my.rotacao = function(A, c, ang){
+		var MRot = [[Math.cos(ang),(Math.sin(ang)*(-1)),0],[Math.sin(ang),Math.cos(ang),0],[0,0,1]];
+		var tx = c.x, ty = c.y;
+		var Mtemp = my.translacao(A,-tx,-ty);
+		Mtemp = my.multiMatriz(MRot,Mtemp,3,3,1);
+		return my.translacao(Mtemp,tx,ty);
 	};
 
 	//Escala

@@ -11,3 +11,6 @@ var DRAWINGAREA = 0;				//Se esta desenhando uma area
 var DRAWINGCIR = 0;					//Se esta desenhando um circulo
 var DRAWINGTRANS = 0;				//Se esta transformando
 var SELECTID = -1;					//Primitiva selecionada
+var REF = 0;						//Referencia selecionada
+var ULTCOORD = {};					//Ultima coordenada mouse
+var COORDSEL = {};					//Local selecionada
