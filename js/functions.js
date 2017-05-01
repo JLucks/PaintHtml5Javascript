@@ -284,18 +284,23 @@ var FUNCTIONS = (function(){
 	};
 
 	//Escala
-	my.escala = function(idPonto, sx, sy){
-		PONTO[idPonto].coord.x = PONTO[idPonto].coord.x * sx;
-		PONTO[idPonto].coord.y = PONTO[idPonto].coord.y * sy;
+	my.escala = function(A, c, txe){
+		var MEsc = [[txe,0,0],[0,txe,0],[0,0,1]];
+		var tx = c.x, ty = c.y;
+		var Mtemp = my.translacao(A,-tx,-ty);
+		Mtemp = my.multiMatriz(MEsc,Mtemp,3,3,1);
+		return my.translacao(Mtemp,tx,ty);
 	};
 
 	//Espelhamento
-	my.espelhamentoX = function(idPonto){
-		PONTO[idPonto].coord.y = PONTO[idPonto].coord.y * (-1);
+	my.espelhamentoX = function(A){
+		var MEspX = [[1,0,0],[0,-1,0],[0,0,1]];
+		return my.multiMatriz(MEspX,A,3,3,1);
 	};
 
-	my.espelhamentoY = function(idPonto){
-		PONTO[idPonto].coord.x = PONTO[idPonto].coord.x * (-1);
+	my.espelhamentoY = function(A){
+		var MEspy = [[-1,0,0],[0,1,0],[0,0,1]];
+		return my.multiMatriz(MEspy,A,3,3,1);
 	};
 	
 	return my;						//Retorna o que é público

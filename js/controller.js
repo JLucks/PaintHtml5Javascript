@@ -46,6 +46,10 @@ function actionPaintClick(canvas,ctx, x, y){
 			case 0: 			//Ponto
 				for (var i = 0; i < PONTO.length; i++) {
 					if(FUNCTIONS.pickPonto(i,x,y)){
+						COORDSEL.x = x;
+						COORDSEL.y = y;
+						ULTCOORD.x = x;
+						ULTCOORD.y = y;
 						if(SELECTID == i)
 							break;
 						SELECTID = i;		
@@ -59,6 +63,8 @@ function actionPaintClick(canvas,ctx, x, y){
 					if(FUNCTIONS.pickReta(i,x,y)){
 						COORDSEL.x = x;
 						COORDSEL.y = y;
+						ULTCOORD.x = x;
+						ULTCOORD.y = y;
 						if(SELECTID == i)
 							break;
 						SELECTID = i;
@@ -73,6 +79,8 @@ function actionPaintClick(canvas,ctx, x, y){
 					if(FUNCTIONS.pickArea(i,x,y)){
 						COORDSEL.x = x;
 						COORDSEL.y = y;
+						ULTCOORD.x = x;
+						ULTCOORD.y = y;
 						if(SELECTID == i)
 							break;
 						SELECTID = i;
@@ -86,6 +94,8 @@ function actionPaintClick(canvas,ctx, x, y){
 					if(FUNCTIONS.pickCirculo(i,x,y)){					
 						COORDSEL.x = x;
 						COORDSEL.y = y;
+						ULTCOORD.x = x;
+						ULTCOORD.y = y;
 						if(SELECTID == i)
 							break;
 						SELECTID = i;	
@@ -95,7 +105,7 @@ function actionPaintClick(canvas,ctx, x, y){
 				}	
 				break
 		}
-		if(MODETRANSFORM != 1){
+		if(MODETRANSFORM != 1 && MODETRANSFORM != 2){
 			SELECTID = -1;
 		}				
 		if(MODETRANSFORM == 1){
@@ -103,7 +113,23 @@ function actionPaintClick(canvas,ctx, x, y){
 				COORDSEL.x = x;
 				COORDSEL.y = y;
 				ULTCOORD.x = x;
+				ULTCOORD.y = y;
 				REF = 1;
+			}
+			else{
+				SELECTID = -1;
+			}	
+		}
+		else if(MODETRANSFORM == 2){
+			if(REF == 0){
+				COORDSEL.x = x;
+				COORDSEL.y = y;
+				REF++;
+			}
+			else if(REF == 1){				
+				ULTCOORD.x = x;
+				ULTCOORD.y = y;
+				REF++;
 			}
 			else{
 				SELECTID = -1;
@@ -311,7 +337,8 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 				case 1: 			//Rotação
 					DRAW.drawUpdate(canvas);
 					if(REF == 1){
-						ang = Math.PI / 18;
+						var ang = Math.PI / 36;
+						var MP, MR;	
 						if(x < ULTCOORD.x)
 							ang *= -1;
 						if(PRIMITIVE == 0){
@@ -347,37 +374,57 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					}					
 					break;
 				case 2: 			//Espelhamento
-					break;
-				case 3: 			//Escala
-					var sx, sy;					
 					DRAW.drawUpdate(canvas);
-					if(PRIMITIVE == 1){
-
-					}
-					else if (PRIMITIVE == 2) {
-						var A = 0, cx = 0, cy = 0;
-						for(var i = 0; i < AREA[SELECTID].n; i++)
-							A += (AREA[SELECTID].coord[i].x * AREA[SELECTID].coord[i+1].y) - (AREA[SELECTID].coord[i+1].x * AREA[SELECTID].coord[i].y);
-						A = A * (1/2);
-						for(var i = 0; i < AREA[SELECTID].n; i++)
-							cx = (AREA[SELECTID].coord[i].x + AREA[SELECTID].coord[i+1].x)*(AREA[SELECTID].coord[i].x * AREA[SELECTID].coord[i+1].y) - (AREA[SELECTID].coord[i+1].x * AREA[SELECTID].coord[i].y);
-						cx = cx * (1/(6*A));
-						for(var i = 0; i < AREA[SELECTID].n; i++)
-							cy = (AREA[SELECTID].coord[i].y+ AREA[SELECTID].coord[i+1].y)*(AREA[SELECTID].coord[i].x * AREA[SELECTID].coord[i+1].y) - (AREA[SELECTID].coord[i+1].x * AREA[SELECTID].coord[i].y);
-						cy = cy * (1/(6*A));
-						sx = sy = Math.sqrt(Math.pow((x - cx),2) + Math.pow((y - cy),2));
-						for (var j = 0; j <= AREA[SELECTID].n; j++) {			//Deleta do array os pontos da area
-							for (var l = 0; l < PONTO.length; l++) {			//Percorre os pontos
-								if(FUNCTIONS.pickPonto(l, AREA[SELECTID].coord[j].x,AREA[SELECTID].coord[j].y)){ 			//Verifica se é um ponto da reta
-									FUNCTIONS.escala(l,sx,sy);
-									break;
-								}
-							}
+					if(PRIMITIVE == 0){
+						if (REF == 1) {
+							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
+							MP = [[PONTO[SELECTID].coord.x],[PONTO[SELECTID].coord.y],[1]];
+							MR = FUNCTIONS.espelhamentoX(MP);
+							console.log(MR[0][0],MR[1][0]);
+							DRAW.drawPoint(ctx,MR[0][0],MR[1][0]);
 						}
 					}
-					else if (PRIMITIVE == 3) {
+					else if(PRIMITIVE == 1){
+
+					}
+					else if(PRIMITIVE == 2){
+
+					}
+					else if(PRIMITIVE == 3){
+
+					}
+					ULTCOORD.x = x;
+					ULTCOORD.y = y;
+					//DRAW.drawUpdate(canvas);
+					break;
+				case 3: 			//Escala			
+					DRAW.drawUpdate(canvas);					
+					var txEsc = 1.005;
+					var MP, MR;	
+					if(x < ULTCOORD.x)
+						txEsc = 0.995;
+					if(PRIMITIVE == 1){
+						for (var i = 0; i <= RETA[SELECTID].n; i++) {			
+							MP = [[RETA[SELECTID].coord[i].x],[RETA[SELECTID].coord[i].y],[1]];
+							MR = FUNCTIONS.escala(MP,COORDSEL,txEsc);
+							RETA[SELECTID].coord[i].x = MR[0][0];
+							RETA[SELECTID].coord[i].y = MR[1][0];
+						}
+					}
+					else if (PRIMITIVE == 2) {
+						for (var i = 0; i <= AREA[SELECTID].n; i++) {			
+							MP = [[AREA[SELECTID].coord[i].x],[AREA[SELECTID].coord[i].y],[1]];
+							MR = FUNCTIONS.escala(MP,COORDSEL,txEsc);
+							AREA[SELECTID].coord[i].x = MR[0][0];
+							AREA[SELECTID].coord[i].y = MR[1][0];
+						}
 						
 					}
+					else if (PRIMITIVE == 3) {
+						CIR[SELECTID].raio *= txEsc;
+					}
+					ULTCOORD.x = x;			
+					DRAW.drawUpdate(canvas);	
 					break
 			}	
 		}
