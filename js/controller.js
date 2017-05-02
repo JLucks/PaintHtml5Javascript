@@ -21,7 +21,7 @@ window.onload = function () {
 
 	canvasPaint.addEventListener('dblclick',function(evt){			//Funções do 'dblclick' do mouse no Canvas Principal
 		mousePos = FUNCTIONS.getMousePos(canvasPaint, evt);
-		actionPaintDBLClick(ctxPaint, mousePos.x, mousePos.y);
+		actionPaintDBLClick(canvasPaint,ctxPaint, mousePos.x, mousePos.y);
 	},false);
 
 	canvasPaint.addEventListener('mousemove',function(evt){			//Funções do 'mousemove' do mouse no Canvas Principal
@@ -253,7 +253,7 @@ function actionPaintClick(canvas,ctx, x, y){
 	}
 }
 
-function actionPaintDBLClick(ctx, x, y){
+function actionPaintDBLClick(canvas,ctx, x, y){
 	if(MODEACTIVE == 1){
 		switch(PRIMITIVE){
 			case 1: 						//Reta
@@ -266,6 +266,19 @@ function actionPaintDBLClick(ctx, x, y){
 					DRAWINGAREA = 0;
 				}
 				break;
+		}
+	}
+	else if(MODEACTIVE == 0){
+		if(MODETRANSFORM == 4 && SELECTID > -1 && PRIMITIVE == 2){
+			DRAW.drawUpdate(canvas);
+			var ar = 0;
+			var fst = AREA[SELECTID].n;
+			for (var i = 0; i <= AREA[SELECTID].n; i++) {
+				ar += FUNCTIONS.areaVetor(AREA[SELECTID].coord[i],AREA[SELECTID].coord[fst],COORDSEL);
+				fst = i;
+			}
+			ctx.font = "30px Arial";
+	        ctx.fillText(Math.round(ar),COORDSEL.x,COORDSEL.y);
 		}
 	}
 }
