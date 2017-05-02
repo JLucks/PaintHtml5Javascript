@@ -28,13 +28,15 @@ var MENUPAINT = (function (){
 						if(y < 400){
 							if(x < 100)					//Quarto botão
 								PRIMITIVE = 0;
-							else{}						//Decimo Segundo botão
+							else						//Decimo Segundo botão
+								MODETRANSFORM = 4;
 						}
 						else{
 							if(y < 500){
 								if(x < 100)				//Quinto botão
 									PRIMITIVE = 1;
-								else{}					//Decimo Terceiro botão
+								else					//Decimo Terceiro botão
+									MODETRANSFORM = 5;
 							}
 							else{
 								if(y < 600){

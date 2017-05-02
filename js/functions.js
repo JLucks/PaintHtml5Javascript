@@ -286,21 +286,28 @@ var FUNCTIONS = (function(){
 	//Escala
 	my.escala = function(A, c, txe){
 		var MEsc = [[txe,0,0],[0,txe,0],[0,0,1]];
-		var tx = c.x, ty = c.y;
-		var Mtemp = my.translacao(A,-tx,-ty);
+		var Mtemp = my.translacao(A,-c.x,-c.y);
 		Mtemp = my.multiMatriz(MEsc,Mtemp,3,3,1);
-		return my.translacao(Mtemp,tx,ty);
+		return my.translacao(Mtemp,c.x,c.y);
 	};
 
 	//Espelhamento
-	my.espelhamentoX = function(A){
+	my.espelhamentoX = function(A,c,ang){
 		var MEspX = [[1,0,0],[0,-1,0],[0,0,1]];
-		return my.multiMatriz(MEspX,A,3,3,1);
+		var Mtemp = my.translacao(A,-c.x,-c.y);
+		Mtemp = my.rotacao(Mtemp,c,-ang);
+		Mtemp = my.multiMatriz(MEspX,Mtemp,3,3,1);
+		Mtemp = my.rotacao(Mtemp,c,ang);
+		return my.translacao(Mtemp,c.x,c.y);
 	};
 
-	my.espelhamentoY = function(A){
+	my.espelhamentoY = function(A,c,ang){
 		var MEspy = [[-1,0,0],[0,1,0],[0,0,1]];
-		return my.multiMatriz(MEspy,A,3,3,1);
+		var Mtemp = my.translacao(A,-c.x,-c.y);
+		Mtemp = my.rotacao(Mtemp,c,-ang);
+		Mtemp = my.multiMatriz(MEspy,Mtemp,3,3,1);
+		Mtemp = my.rotacao(Mtemp,c,ang);
+		return my.translacao(Mtemp,c.x,c.y);
 	};
 	
 	return my;						//Retorna o que é público

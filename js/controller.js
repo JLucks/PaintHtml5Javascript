@@ -126,10 +126,9 @@ function actionPaintClick(canvas,ctx, x, y){
 				COORDSEL.y = y;
 				REF++;
 			}
-			else if(REF == 1){				
-				ULTCOORD.x = x;
-				ULTCOORD.y = y;
+			else if(REF == 1){	
 				REF++;
+				duplicate(canvas);
 			}
 			else{
 				SELECTID = -1;
@@ -378,24 +377,163 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					if(PRIMITIVE == 0){
 						if (REF == 1) {
 							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
-							MP = [[PONTO[SELECTID].coord.x],[PONTO[SELECTID].coord.y],[1]];
-							MR = FUNCTIONS.espelhamentoX(MP);
-							console.log(MR[0][0],MR[1][0]);
+							var ang, p = {}, u , v;
+							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
+								p.x = COORDSEL.x - (COORDSEL.x - x);
+								p.y = PONTO[SELECTID].coord.y;
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.x - x);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
+								MP = [[PONTO[SELECTID].coord.x],[PONTO[SELECTID].coord.y],[1]];
+								MR = FUNCTIONS.espelhamentoY(MP,p,ang);
+							}
+							else{
+								p.x = PONTO[SELECTID].coord.x;
+								p.y = COORDSEL.y - (COORDSEL.y - y);
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.y - y);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
+								MP = [[PONTO[SELECTID].coord.x],[PONTO[SELECTID].coord.y],[1]];
+								MR = FUNCTIONS.espelhamentoX(MP,p,ang);
+							}
 							DRAW.drawPoint(ctx,MR[0][0],MR[1][0]);
+							ULTCOORD.x = MR[0][0];
+							ULTCOORD.y = MR[1][0];
 						}
 					}
 					else if(PRIMITIVE == 1){
-
+						if (REF == 1) {
+							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
+							var ang, p = {}, u , v, np = {};
+							ULTCOORDS = [];
+							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.x - x);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
+								for (var i = 0; i <= RETA[SELECTID].n; i++) {	
+									p.x = COORDSEL.x - (COORDSEL.x - x);
+									p.y = RETA[SELECTID].coord[i].y;
+									MP = [[RETA[SELECTID].coord[i].x],[RETA[SELECTID].coord[i].y],[1]];
+									MR = FUNCTIONS.espelhamentoY(MP,p,ang);	
+									np = {};							
+									np.x = MR[0][0];
+									np.y = MR[1][0];
+									ULTCOORDS.push(np);
+								}
+							}
+							else{
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.y - y);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
+								for (var i = 0; i <= RETA[SELECTID].n; i++) {										
+									p.x = RETA[SELECTID].coord[i].x;
+									p.y = COORDSEL.y - (COORDSEL.y - y);
+									MP = [[RETA[SELECTID].coord[i].x],[RETA[SELECTID].coord[i].y],[1]];
+									MR = FUNCTIONS.espelhamentoX(MP,p,ang);		
+									np = {};							
+									np.x = MR[0][0];
+									np.y = MR[1][0];
+									ULTCOORDS.push(np);
+								}
+							}
+							for (var j = 0; j < ULTCOORDS.length - 1; j++) {
+				                DRAW.drawLine(ctx, ULTCOORDS[j].x,ULTCOORDS[j].y, ULTCOORDS[j+1].x,ULTCOORDS[j+1].y);
+				            }
+						}
 					}
 					else if(PRIMITIVE == 2){
-
+						if (REF == 1) {
+							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
+							var ang, p = {}, u , v, np = {};
+							ULTCOORDS = [];
+							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.x - x);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
+								for (var i = 0; i <= AREA[SELECTID].n; i++) {	
+									p.x = COORDSEL.x - (COORDSEL.x - x);
+									p.y = AREA[SELECTID].coord[i].y;
+									MP = [[AREA[SELECTID].coord[i].x],[AREA[SELECTID].coord[i].y],[1]];
+									MR = FUNCTIONS.espelhamentoY(MP,p,ang);	
+									np = {};							
+									np.x = MR[0][0];
+									np.y = MR[1][0];
+									ULTCOORDS.push(np);
+								}
+							}
+							else{
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.y - y);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
+								for (var i = 0; i <= AREA[SELECTID].n; i++) {										
+									p.x = AREA[SELECTID].coord[i].x;
+									p.y = COORDSEL.y - (COORDSEL.y - y);
+									MP = [[AREA[SELECTID].coord[i].x],[AREA[SELECTID].coord[i].y],[1]];
+									MR = FUNCTIONS.espelhamentoX(MP,p,ang);		
+									np = {};							
+									np.x = MR[0][0];
+									np.y = MR[1][0];
+									ULTCOORDS.push(np);
+								}
+							}
+							var fst = ULTCOORDS.length - 1;
+							for (var j = 0; j <= ULTCOORDS.length - 1; j++) {
+				                DRAW.drawLine(ctx, ULTCOORDS[j].x,ULTCOORDS[j].y, ULTCOORDS[fst].x,ULTCOORDS[fst].y);
+				                fst = j;
+				            }
+						}
 					}
 					else if(PRIMITIVE == 3){
-
+						if (REF == 1) {
+							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
+							var ang, p = {}, u , v;
+							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
+								p.x = COORDSEL.x - (COORDSEL.x - x);
+								p.y = CIR[SELECTID].coord.y;
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.x - x);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
+								MP = [[CIR[SELECTID].coord.x],[CIR[SELECTID].coord.y],[1]];
+								MR = FUNCTIONS.espelhamentoY(MP,p,ang);
+							}
+							else{
+								p.x = CIR[SELECTID].coord.x;
+								p.y = COORDSEL.y - (COORDSEL.y - y);
+								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
+								v = Math.abs(COORDSEL.y - y);
+								if(v == 0)
+									ang = 0;
+								else
+									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
+								MP = [[CIR[SELECTID].coord.x],[CIR[SELECTID].coord.y],[1]];
+								MR = FUNCTIONS.espelhamentoX(MP,p,ang);
+							}
+							DRAW.drawCir(ctx,MR[0][0],MR[1][0],CIR[SELECTID].raio)
+							ULTCOORD.x = MR[0][0];
+							ULTCOORD.y = MR[1][0];
+						}
 					}
-					ULTCOORD.x = x;
-					ULTCOORD.y = y;
-					//DRAW.drawUpdate(canvas);
 					break;
 				case 3: 			//Escala			
 					DRAW.drawUpdate(canvas);					
@@ -436,25 +574,62 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					DRAW.drawUpdate(canvas);
 					DRAW.drawPoint(ctx,x,y);
 					n = RETA[RETA.length -1].n;
-					DRAW.drawLine(ctx,RETA[RETA.length -1].coord[n].x,RETA[RETA.length -1].coord[n].y,x,y);
+					ctx.setLineDash([3, 3]);
+					DRAW.drawLine(ctx,RETA[RETA.length -1].coord[n].x,RETA[RETA.length -1].coord[n].y,x,y);					
+					ctx.setLineDash([1, 0]);
 				}
 				break;
 			case 2: 						//Area
 				if(DRAWINGAREA == 1){
 					DRAW.drawUpdate(canvas);
 					DRAW.drawPoint(ctx,x,y);
-					n = AREA[AREA.length -1].n;
+					n = AREA[AREA.length -1].n;					
+					ctx.setLineDash([3, 3]);
 					DRAW.drawLine(ctx,AREA[AREA.length -1].coord[n].x,AREA[AREA.length -1].coord[n].y,x,y);
-					DRAW.drawLine(ctx,AREA[AREA.length -1].coord[0].x,AREA[AREA.length -1].coord[0].y,x,y);
+					DRAW.drawLine(ctx,AREA[AREA.length -1].coord[0].x,AREA[AREA.length -1].coord[0].y,x,y);								
+					ctx.setLineDash([1, 0]);
 				}
 				break;
 			case 3: 						//Circulo
 				if(DRAWINGCIR == 1){
 					DRAW.drawUpdate(canvas);
 					dist = Math.sqrt(Math.pow((x - PONTO[PONTO.length - 1].coord.x),2) + Math.pow((y - PONTO[PONTO.length - 1].coord.y),2));
-					DRAW.drawCir(ctx,PONTO[PONTO.length - 1].coord.x, PONTO[PONTO.length - 1].coord.y, dist);
+					ctx.setLineDash([3, 3]);
+					DRAW.drawCir(ctx,PONTO[PONTO.length - 1].coord.x, PONTO[PONTO.length - 1].coord.y, dist);						
+					ctx.setLineDash([1, 0]);
 				}
 				break;
 		}
 	}
+}
+
+function duplicate(canvas){
+	if(REF == 2){
+		if(PRIMITIVE == 0)
+			Ponto.insert(ULTCOORD.x,ULTCOORD.y);
+		else if(PRIMITIVE == 1){			
+			for (var j = 0; j < ULTCOORDS.length; j++) {
+				Ponto.insert(ULTCOORDS[j].x,ULTCOORDS[j].y);
+				if(j==0)
+					Reta.create(PONTO.length - 1);
+				else
+					Reta.insert(RETA.length - 1, PONTO.length - 1);
+            }
+		}
+		else if(PRIMITIVE == 2){			
+			for (var j = 0; j < ULTCOORDS.length; j++) {
+				Ponto.insert(ULTCOORDS[j].x,ULTCOORDS[j].y);
+				if(j==0)
+					Area.create(PONTO.length - 1);
+				else
+					Area.insert(AREA.length - 1, PONTO.length - 1);
+            }
+		}
+		else if(PRIMITIVE == 3){			
+			Ponto.insert(ULTCOORD.x,ULTCOORD.y);
+			Circulo.create(PONTO.length - 1);
+			Circulo.insert(CIR.length - 1, CIR[SELECTID].raio);
+		}
+	}	
+	DRAW.drawUpdate(canvas);
 }

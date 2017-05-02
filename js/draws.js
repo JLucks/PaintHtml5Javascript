@@ -202,7 +202,6 @@ var DRAW = (function(){
 	        ctx.fill(); 
 	    //Decimo Primeiro botão
         ctx.rect(100,200,100,100);
-        ctx.stroke();    
         //Escala
 	        ctx.font = "30px Arial";
 	        ctx.fillText("2x",110,250);
@@ -213,9 +212,78 @@ var DRAW = (function(){
 	    //Decimo Segundo botão
         ctx.rect(100,300,100,100);
         ctx.stroke();
+        //Triangulo
+            ctx.moveTo(120,305);
+            ctx.lineTo(105,335);
+            ctx.lineTo(140,335);
+            ctx.lineTo(120,305);            
+            ctx.moveTo(125,315);            
+            ctx.lineTo(112,320);                      
+            ctx.moveTo(129,322);            
+            ctx.lineTo(108,327);                      
+            ctx.moveTo(136,328);            
+            ctx.lineTo(104,335);
+            ctx.stroke();
+        //Quadrado
+            ctx.rect(125,325,40,40);                      
+            ctx.moveTo(145,325);            
+            ctx.lineTo(124,342);                    
+            ctx.moveTo(155,325);            
+            ctx.lineTo(124,350);                
+            ctx.moveTo(165,325);            
+            ctx.lineTo(124,360);             
+            ctx.moveTo(165,335);            
+            ctx.lineTo(130,365);            
+            ctx.moveTo(165,345);            
+            ctx.lineTo(133,375);
+            ctx.stroke();
+        //Poligonal de 8
+            ctx.moveTo(145,345);
+            ctx.lineTo(175,345);
+            ctx.lineTo(190,355);
+            ctx.lineTo(190,375);
+            ctx.lineTo(175,385);
+            ctx.lineTo(145,385);
+            ctx.lineTo(133,375);
+            ctx.lineTo(133,355);
+            ctx.lineTo(147,345);             
+            ctx.moveTo(175,345);            
+            ctx.lineTo(143,385);              
+            ctx.moveTo(185,353);            
+            ctx.lineTo(162,386);                    
+        ctx.stroke();    
 	    //Decimo Terceiro botão
-        ctx.rect(100,400,100,100);
+        ctx.rect(100,400,100,100);        
         ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(120,430,5,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(140,430,5,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(160,430,5,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(180,430,5,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();        
+        ctx.beginPath();
+        ctx.arc(150,480,5,0,2*Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+        ctx.moveTo(120,430);            
+        ctx.lineTo(150,480);     
+        ctx.moveTo(180,430);            
+        ctx.lineTo(150,480);                 
+        ctx.stroke();  
+        ctx.beginPath();
+        ctx.arc(150,475,10,5/4*Math.PI,7/4*Math.PI);
+        ctx.fillStyle = "white";
+        ctx.fill();
 	    //Decimo Quarto botão
         ctx.rect(100,500,100,100);
         ctx.stroke();
