@@ -390,31 +390,10 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					if(PRIMITIVE == 0){
 						if (REF == 1) {
 							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
-							var ang, p = {}, u , v;
-							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
-								p.x = COORDSEL.x - (COORDSEL.x - x);
-								p.y = PONTO[SELECTID].coord.y;
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.x - x);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
-								MP = [[PONTO[SELECTID].coord.x],[PONTO[SELECTID].coord.y],[1]];
-								MR = FUNCTIONS.espelhamentoY(MP,p,ang);
-							}
-							else{
-								p.x = PONTO[SELECTID].coord.x;
-								p.y = COORDSEL.y - (COORDSEL.y - y);
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.y - y);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
-								MP = [[PONTO[SELECTID].coord.x],[PONTO[SELECTID].coord.y],[1]];
-								MR = FUNCTIONS.espelhamentoX(MP,p,ang);
-							}
+							p = {};
+							p.x = x;
+							p.y = y;
+							MR = FUNCTIONS.reflect(PONTO[SELECTID].coord,COORDSEL,p);
 							DRAW.drawPoint(ctx,MR[0][0],MR[1][0]);
 							ULTCOORD.x = MR[0][0];
 							ULTCOORD.y = MR[1][0];
@@ -422,44 +401,17 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					}
 					else if(PRIMITIVE == 1){
 						if (REF == 1) {
-							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
-							var ang, p = {}, u , v, np = {};
+							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);							
 							ULTCOORDS = [];
-							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.x - x);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
-								for (var i = 0; i <= RETA[SELECTID].n; i++) {	
-									p.x = COORDSEL.x - (COORDSEL.x - x);
-									p.y = RETA[SELECTID].coord[i].y;
-									MP = [[RETA[SELECTID].coord[i].x],[RETA[SELECTID].coord[i].y],[1]];
-									MR = FUNCTIONS.espelhamentoY(MP,p,ang);	
-									np = {};							
-									np.x = MR[0][0];
-									np.y = MR[1][0];
-									ULTCOORDS.push(np);
-								}
-							}
-							else{
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.y - y);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
-								for (var i = 0; i <= RETA[SELECTID].n; i++) {										
-									p.x = RETA[SELECTID].coord[i].x;
-									p.y = COORDSEL.y - (COORDSEL.y - y);
-									MP = [[RETA[SELECTID].coord[i].x],[RETA[SELECTID].coord[i].y],[1]];
-									MR = FUNCTIONS.espelhamentoX(MP,p,ang);		
-									np = {};							
-									np.x = MR[0][0];
-									np.y = MR[1][0];
-									ULTCOORDS.push(np);
-								}
+							for (var i = 0; i <= RETA[SELECTID].n; i++) {	
+								p = {};
+								p.x = x;
+								p.y = y;
+								MR = FUNCTIONS.reflect(RETA[SELECTID].coord[i],COORDSEL,p);	
+								np = {};							
+								np.x = MR[0][0];
+								np.y = MR[1][0];
+								ULTCOORDS.push(np);
 							}
 							for (var j = 0; j < ULTCOORDS.length - 1; j++) {
 				                DRAW.drawLine(ctx, ULTCOORDS[j].x,ULTCOORDS[j].y, ULTCOORDS[j+1].x,ULTCOORDS[j+1].y);
@@ -469,43 +421,16 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					else if(PRIMITIVE == 2){
 						if (REF == 1) {
 							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
-							var ang, p = {}, u , v, np = {};
 							ULTCOORDS = [];
-							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.x - x);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
-								for (var i = 0; i <= AREA[SELECTID].n; i++) {	
-									p.x = COORDSEL.x - (COORDSEL.x - x);
-									p.y = AREA[SELECTID].coord[i].y;
-									MP = [[AREA[SELECTID].coord[i].x],[AREA[SELECTID].coord[i].y],[1]];
-									MR = FUNCTIONS.espelhamentoY(MP,p,ang);	
-									np = {};							
-									np.x = MR[0][0];
-									np.y = MR[1][0];
-									ULTCOORDS.push(np);
-								}
-							}
-							else{
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.y - y);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
-								for (var i = 0; i <= AREA[SELECTID].n; i++) {										
-									p.x = AREA[SELECTID].coord[i].x;
-									p.y = COORDSEL.y - (COORDSEL.y - y);
-									MP = [[AREA[SELECTID].coord[i].x],[AREA[SELECTID].coord[i].y],[1]];
-									MR = FUNCTIONS.espelhamentoX(MP,p,ang);		
-									np = {};							
-									np.x = MR[0][0];
-									np.y = MR[1][0];
-									ULTCOORDS.push(np);
-								}
+							for (var i = 0; i <= AREA[SELECTID].n; i++) {	
+								p = {};
+								p.x = x;
+								p.y = y;
+								MR = FUNCTIONS.reflect(AREA[SELECTID].coord[i],COORDSEL,p);	
+								np = {};							
+								np.x = MR[0][0];
+								np.y = MR[1][0];
+								ULTCOORDS.push(np);								
 							}
 							var fst = ULTCOORDS.length - 1;
 							for (var j = 0; j <= ULTCOORDS.length - 1; j++) {
@@ -517,31 +442,10 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 					else if(PRIMITIVE == 3){
 						if (REF == 1) {
 							DRAW.drawLine(ctx,COORDSEL.x,COORDSEL.y,x,y);
-							var ang, p = {}, u , v;
-							if(Math.abs(COORDSEL.y - y) > Math.abs(COORDSEL.x - x)){
-								p.x = COORDSEL.x - (COORDSEL.x - x);
-								p.y = CIR[SELECTID].coord.y;
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.x - x);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.x - x)*(COORDSEL.x - x))/(u*v)));
-								MP = [[CIR[SELECTID].coord.x],[CIR[SELECTID].coord.y],[1]];
-								MR = FUNCTIONS.espelhamentoY(MP,p,ang);
-							}
-							else{
-								p.x = CIR[SELECTID].coord.x;
-								p.y = COORDSEL.y - (COORDSEL.y - y);
-								u = Math.sqrt(Math.pow(COORDSEL.x - x,2) + Math.pow(COORDSEL.y - y,2));
-								v = Math.abs(COORDSEL.y - y);
-								if(v == 0)
-									ang = 0;
-								else
-									ang = Math.acos(Math.cos(((COORDSEL.y - y)*(COORDSEL.y- y))/(u*v)));
-								MP = [[CIR[SELECTID].coord.x],[CIR[SELECTID].coord.y],[1]];
-								MR = FUNCTIONS.espelhamentoX(MP,p,ang);
-							}
+							p = {};
+							p.x = x;
+							p.y = y;
+							MR = FUNCTIONS.reflect(CIR[SELECTID].coord,COORDSEL,p);							
 							DRAW.drawCir(ctx,MR[0][0],MR[1][0],CIR[SELECTID].raio)
 							ULTCOORD.x = MR[0][0];
 							ULTCOORD.y = MR[1][0];

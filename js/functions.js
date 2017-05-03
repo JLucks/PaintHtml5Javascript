@@ -314,10 +314,24 @@ var FUNCTIONS = (function(){
 		var a, u, v, ang;
 		u = Math.sqrt(Math.pow(p1.x - c.x,2) + Math.pow(p1.y - c.y,2));
 		v = Math.sqrt(Math.pow(p1.x - p2.x,2) + Math.pow(p1.y - p2.y,2));
-		ang = Math.acos(Math.cos((((p1.x - c.x)*(p1.x - p2.x))+((p1.y - c.y)*(p1.y - p2.y)))/(u*v)));
+		ang = Math.acos(Math.cos((((p1.x - c.x)*(p1.x - p2.x))+((p1.y - c.y)*(p1.y - p2.y)))/(u*v)));	
 		a = 1/2 * u * v * Math.sin(ang);
 		return a;
 	};
+
+	my.reflect = function(p, p0, p1) {
+        var dx, dy, a, b, x, y;
+
+        dx = p1.x - p0.x;
+        dy = p1.y - p0.y;
+        a = (dx * dx - dy * dy) / (dx * dx + dy * dy);
+        b = 2 * dx * dy / (dx * dx + dy * dy);
+        x = Math.round(a * (p.x - p0.x) + b * (p.y - p0.y) + p0.x); 
+        y = Math.round(b * (p.x - p0.x) - a * (p.y - p0.y) + p0.y);
+
+        A = [[x],[y],[1]];
+        return A;
+    }
 
 	return my;						//Retorna o que é público
 }());
