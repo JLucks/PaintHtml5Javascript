@@ -41,70 +41,55 @@ window.onload = function () {
 }
 
 function actionPaintClick(canvas,ctx, x, y){
-	if(MODEACTIVE == 0){		//Seleção
-		switch(PRIMITIVE){
-			case 0: 			//Ponto
-				for (var i = 0; i < PONTO.length; i++) {
-					if(FUNCTIONS.pickPonto(i,x,y)){
-						COORDSEL.x = x;
-						COORDSEL.y = y;
-						ULTCOORD.x = x;
-						ULTCOORD.y = y;
-						if(SELECTID == i)
-							break;
-						SELECTID = i;		
-						REF = 0;		
-						return;
-					}
-				}				
-				break;
-			case 1: 			//Reta
-				for (var i = 0; i < RETA.length; i++) {
-					if(FUNCTIONS.pickReta(i,x,y)){
-						COORDSEL.x = x;
-						COORDSEL.y = y;
-						ULTCOORD.x = x;
-						ULTCOORD.y = y;
-						if(SELECTID == i)
-							break;
-						SELECTID = i;
-						REF = 0;
-						return;
-					}
-				}	
-				
-				break;
-			case 2: 			//Area
-				for (var i = 0; i < AREA.length; i++) {
-					if(FUNCTIONS.pickArea(i,x,y)){
-						COORDSEL.x = x;
-						COORDSEL.y = y;
-						ULTCOORD.x = x;
-						ULTCOORD.y = y;
-						if(SELECTID == i)
-							break;
-						SELECTID = i;
-						REF = 0;
-						return;
-					}
-				}	
-				break;
-			case 3: 			//Circulo
-				for (var i = 0; i < CIR.length; i++) {
-					if(FUNCTIONS.pickCirculo(i,x,y)){					
-						COORDSEL.x = x;
-						COORDSEL.y = y;
-						ULTCOORD.x = x;
-						ULTCOORD.y = y;
-						if(SELECTID == i)
-							break;
-						SELECTID = i;	
-						REF = 0;
-						return;
-					}
-				}	
-				break
-		}
+	if(MODEACTIVE == 0){		//Seleção//Ponto
+		for (var i = 0; i < PONTO.length; i++) {
+			if(FUNCTIONS.pickPonto(i,x,y)){
+				COORDSEL.x = x;
+				COORDSEL.y = y;
+				ULTCOORD.x = x;
+				ULTCOORD.y = y;
+				SELECTID = i;	
+				PRIMITIVE = 0;	
+				REF = 0;		
+				return;
+			}
+		}				
+		for (var i = 0; i < RETA.length; i++) {
+			if(FUNCTIONS.pickReta(i,x,y)){
+				COORDSEL.x = x;
+				COORDSEL.y = y;
+				ULTCOORD.x = x;
+				ULTCOORD.y = y;
+				SELECTID = i;
+				PRIMITIVE = 1;
+				REF = 0;
+				return;
+			}
+		}	
+		for (var i = 0; i < AREA.length; i++) {
+			if(FUNCTIONS.pickArea(i,x,y)){
+				COORDSEL.x = x;
+				COORDSEL.y = y;
+				ULTCOORD.x = x;
+				ULTCOORD.y = y;
+				SELECTID = i;
+				PRIMITIVE = 2;
+				REF = 0;
+				return;
+			}
+		}	
+		for (var i = 0; i < CIR.length; i++) {
+			if(FUNCTIONS.pickCirculo(i,x,y)){					
+				COORDSEL.x = x;
+				COORDSEL.y = y;
+				ULTCOORD.x = x;
+				ULTCOORD.y = y;
+				SELECTID = i;	
+				PRIMITIVE = 3;
+				REF = 0;
+				return;
+			}
+		}	
 		if(MODETRANSFORM != 1 && MODETRANSFORM != 2){
 			SELECTID = -1;
 		}				
@@ -269,16 +254,46 @@ function actionPaintDBLClick(canvas,ctx, x, y){
 		}
 	}
 	else if(MODEACTIVE == 0){
-		if(MODETRANSFORM == 4 && SELECTID > -1 && PRIMITIVE == 2){
-			DRAW.drawUpdate(canvas);
+		if(MODETRANSFORM == 4 && SELECTID > -1){	//Area do poligono		
 			var ar = 0;
-			var fst = AREA[SELECTID].n;
-			for (var i = 0; i <= AREA[SELECTID].n; i++) {
-				ar += FUNCTIONS.areaVetor(AREA[SELECTID].coord[i],AREA[SELECTID].coord[fst],COORDSEL);
-				fst = i;
+			if(PRIMITIVE == 2){
+				DRAW.drawUpdate(canvas);
+				ar = FUNCTIONS.areaPVetor(AREA[SELECTID].coord);
+			}
+			else if(PRIMITIVE == 3){				
+				DRAW.drawUpdate(canvas);
+				ar = Math.PI * Math.pow(CIR[SELECTID].raio,2);
 			}
 			ctx.font = "30px Arial";
 	        ctx.fillText(Math.round(ar),COORDSEL.x,COORDSEL.y);
+		}
+		if(MODETRANSFORM == 5){		//fecho
+		    if (PONTO.length < 3)
+		    {
+		        ctx.font = "30px Arial";
+	        	ctx.fillText("Não é possivel calcular o fecho.",COORDSEL.x,COORDSEL.y);
+		        return;
+		    }
+		 
+		    var min_x = 0;
+		    var max_x = 0;
+		    for(var i = 1; i < PONTO.length; i++){
+		    	if(PONTO[i].coord.x < PONTO[min_x].coord.x)
+		    		min_x = i;
+		    	if(PONTO[i].coord.x > PONTO[max_x].coord.x)
+		    		max_x = i;
+		    }
+		    		 
+			FUNCTIONS.quickHull(PONTO[min_x].coord, PONTO[max_x].coord, 1);
+		    FUNCTIONS.quickHull(PONTO[min_x].coord, PONTO[max_x].coord, -1);
+		    
+		    var fst = Hull.pontos.length - 1;
+		    Hull.sort();
+		    for(var i = 0; i < Hull.pontos.length; i++){
+		    	DRAW.drawLine(ctx,Hull.pontos[fst].x,Hull.pontos[fst].y,Hull.pontos[i].x,Hull.pontos[i].y);
+		    	fst = i;
+		    }
+		    Hull.delete();
 		}
 	}
 }

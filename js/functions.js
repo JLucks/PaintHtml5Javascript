@@ -95,6 +95,78 @@ var Circulo = (function(){
 	return my;
 }());
 
+var Hull = (function(){
+	var my = {};
+	my.pontos = [];
+
+	my.insert = function(ponto){
+		for(var i = 0; i < my.pontos.length; i++){
+			if(FUNCTIONS.pickPontoA(ponto.x,ponto.y,my.pontos[i].x,my.pontos[i].y))
+				return;
+		}
+		my.pontos.push(ponto);
+	};
+
+	my.sort = function(){
+		var min = 0;
+		var temp;
+		var max = 0;
+		var med = 0;
+		var cres = [];
+		var decres = [];
+		for(var i = 1; i < my.pontos.length; i++){
+			if(my.pontos[i].y < my.pontos[min].y)
+				min = i;
+			if(my.pontos[i].y > my.pontos[max].y)
+				max = i;
+		}
+		med = (my.pontos[max].y - my.pontos[min].y)/2;
+		for(var i = 0; i < my.pontos.length; i++){
+			if(my.pontos[i].y >= (my.pontos[min].y + med))
+				cres.push(my.pontos[i]);
+			else
+				decres.push(my.pontos[i]);
+		}
+		for(var i = 0; i < cres.length; i++){
+			min = i;
+			for(var j = i+1; j < cres.length; j++){
+				if(cres[j].x < cres[min].x){
+					min = j;
+				}
+			}
+			if(min != i){
+				temp = cres[i];
+				cres[i] = cres[min];
+				cres[min] = temp;
+			}
+		}
+		for(var i = 0; i < decres.length; i++){
+			max = i;
+			for(var j = i+1; j < decres.length; j++){
+				if(decres[j].x > decres[max].x){
+					max = j;
+				}
+			}
+			if(max != i){
+				temp = decres[i];
+				decres[i] = decres[max];
+				decres[max] = temp;
+			}
+		}
+		for(var i = 0; i < cres.length; i++)
+			my.pontos[i] = cres[i];
+		for(var i = cres.length; i < my.pontos.length; i++)
+			my.pontos[i] = decres[i - cres.length];
+
+	};
+
+	my.delete = function(){
+		my.pontos = [];
+	};	
+
+	return my;
+}());
+
 //Module Pattern
 var FUNCTIONS = (function(){
 	var my = {};					//Variaveis e funções públicas
@@ -331,7 +403,64 @@ var FUNCTIONS = (function(){
 
         A = [[x],[y],[1]];
         return A;
-    }
+    };
 
+
+	my.areaPVetor = function(p){
+    	var area = 0;
+		var N = p.length;
+		//We will triangulate the polygon
+		//into triangles with points p[0],p[i],p[i+1]
+
+		for(var i = 1; i+1<N; i++){
+		    var x1 = p[i].x - p[0].x;
+		    var y1 = p[i].y - p[0].y;
+		    var x2 = p[i+1].x - p[0].x;
+		    var y2 = p[i+1].y - p[0].y;
+		    var cross = x1*y2 - x2*y1;
+		    area += cross;
+		}
+		return Math.abs(area/2.0);
+	};
+
+	my.findSide = function(p1, p2, p)	{
+	    var val = (p.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (p.x - p1.x);
+	    if (val > 0)
+	        return 1;
+	    if (val < 0)
+	        return -1;
+	    return 0;
+	};
+
+	my.dist = function(p, q){
+    	return (p.y - q.y) * (p.y - q.y) + (p.x - q.x) * (p.x - q.x);
+	};
+
+	my.lineDist = function(p1, p2, p){
+    	return Math.abs((p.y - p1.y) * (p2.x - p1.x) - (p2.y - p1.y) * (p.x - p1.x));
+	};
+
+	my.quickHull = function(p1,p2,side){
+	    var ind = -1;
+	    var max_dist = 0;
+	 	
+	 	for(var i = 0; i < PONTO.length; i++){
+	 		var temp = my.lineDist(p1,p2,PONTO[i].coord);
+	 		if(my.findSide(p1,p2,PONTO[i].coord) == side && temp > max_dist){
+	 			ind = i;
+	 			max_dist = temp;
+	 		}
+	 	}
+
+	    if (ind == -1){
+	        Hull.insert(p1);
+	        Hull.insert(p2);
+	        return;
+	    }
+	 
+	    my.quickHull(PONTO[ind].coord, p1, -my.findSide(PONTO[ind].coord, p1, p2));
+	    my.quickHull(PONTO[ind].coord, p2, -my.findSide(PONTO[ind].coord, p2, p1));
+	};
+	
 	return my;						//Retorna o que é público
 }());
