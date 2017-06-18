@@ -268,10 +268,11 @@ function actionPaintDBLClick(canvas,ctx, x, y){
 	        ctx.fillText(Math.round(ar),COORDSEL.x,COORDSEL.y);
 		}
 		if(MODETRANSFORM == 5){		//fecho
+			DRAW.drawUpdate(canvas);
 		    if (PONTO.length < 3)
 		    {
 		        ctx.font = "30px Arial";
-	        	ctx.fillText("Não é possivel calcular o fecho.",COORDSEL.x,COORDSEL.y);
+	        	ctx.fillText("Nao e possivel calcular o fecho.",x,y);
 		        return;
 		    }
 		 
@@ -461,7 +462,7 @@ function actionPaintMove(canvas,ctx, x, y){  //-------->Arrumar
 							p.x = x;
 							p.y = y;
 							MR = FUNCTIONS.reflect(CIR[SELECTID].coord,COORDSEL,p);							
-							DRAW.drawCir(ctx,MR[0][0],MR[1][0],CIR[SELECTID].raio)
+							DRAW.drawCir(ctx,MR[0][0],MR[1][0],CIR[SELECTID].raio);
 							ULTCOORD.x = MR[0][0];
 							ULTCOORD.y = MR[1][0];
 						}

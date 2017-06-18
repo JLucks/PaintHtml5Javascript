@@ -107,6 +107,14 @@ var Hull = (function(){
 		my.pontos.push(ponto);
 	};
 
+	my.compareCres = function(p1,p2){
+		return p1.x - p2.x;
+	};
+
+	my.compareDecres = function(p1,p2){
+		return -(p1.x - p2.x);
+	};
+
 	my.sort = function(){
 		var min = 0;
 		var temp;
@@ -115,44 +123,19 @@ var Hull = (function(){
 		var cres = [];
 		var decres = [];
 		for(var i = 1; i < my.pontos.length; i++){
-			if(my.pontos[i].y < my.pontos[min].y)
+			if(my.pontos[i].x < my.pontos[min].x)
 				min = i;
-			if(my.pontos[i].y > my.pontos[max].y)
+			if(my.pontos[i].x > my.pontos[max].x)
 				max = i;
 		}
-		med = (my.pontos[max].y - my.pontos[min].y)/2;
 		for(var i = 0; i < my.pontos.length; i++){
-			if(my.pontos[i].y >= (my.pontos[min].y + med))
+			if(FUNCTIONS.findSide(my.pontos[min],my.pontos[max],my.pontos[i]) > -1)
 				cres.push(my.pontos[i]);
 			else
 				decres.push(my.pontos[i]);
 		}
-		for(var i = 0; i < cres.length; i++){
-			min = i;
-			for(var j = i+1; j < cres.length; j++){
-				if(cres[j].x < cres[min].x){
-					min = j;
-				}
-			}
-			if(min != i){
-				temp = cres[i];
-				cres[i] = cres[min];
-				cres[min] = temp;
-			}
-		}
-		for(var i = 0; i < decres.length; i++){
-			max = i;
-			for(var j = i+1; j < decres.length; j++){
-				if(decres[j].x > decres[max].x){
-					max = j;
-				}
-			}
-			if(max != i){
-				temp = decres[i];
-				decres[i] = decres[max];
-				decres[max] = temp;
-			}
-		}
+		cres.sort(my.compareCres);
+		decres.sort(my.compareDecres);
 		for(var i = 0; i < cres.length; i++)
 			my.pontos[i] = cres[i];
 		for(var i = cres.length; i < my.pontos.length; i++)
