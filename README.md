@@ -1,2 +1,3 @@
-# Pratica1CG
+# Paint
 Html 5 - Canvas
+JavaScript
